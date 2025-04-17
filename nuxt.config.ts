@@ -7,6 +7,20 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
 
+  devServer:{
+    host: '0.0.0.0',
+    port: 80
+  },
+
+  postcss: {
+    plugins: {
+      'postcss-nested': {},
+      'postcss-custom-media': {}
+    }
+  },
+
+  plugins: [{ src: '~/plugins/mqtt.client.ts', mode: 'client' }],
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -14,6 +28,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/scripts',
-    '@nuxt/test-utils'
-  ]
+    '@nuxt/test-utils',
+  ],
+  css: ['@/assets/scss/default.scss']
 })
