@@ -8,9 +8,5 @@
 
 <script setup lang="ts">
 
-  onMounted(() => {
-    console.debug('App mounted.')
-    navigateTo('/home')
-  })
 
 </script>

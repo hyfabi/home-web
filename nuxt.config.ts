@@ -1,65 +1,74 @@
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-
-  build: {
-    transpile: ['vuetify'],
-  },
-  modules: [
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
-      })
-    },
-    //...
-  ],
-  vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
-  },
-
-  future: {
-    compatibilityVersion: 4
-  },
 
   devServer:{
     host: '0.0.0.0',
     port: 80
   },
 
-  postcss: {
-    plugins: {
-      'postcss-nested': {},
-      'postcss-custom-media': {}
-    }
+  future: {
+    compatibilityVersion: 4
   },
 
-  plugins: [{ src: '~/plugins/mqtt.client.ts', mode: 'client' }],
-
   modules: [
+    '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/fonts',
-    '@nuxt/content',
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/test-utils',
+    '@nuxt/ui',
+    'vuetify-nuxt-module',
   ],
-  css: ['@/assets/scss/default.scss', 'vuetify/styles'],
+
+  ssr: false,
 
   runtimeConfig: {
     // Private variables, only available on server
-
-    // Public variables, available on client and server
     public: {
       mqttServerBaseUrl: '10.0.0.103',
     }
   },
 
+  // when enabling ssr option you need to disable inlineStyles and maybe devLogs
+  features: {
+    inlineStyles: false,
+    devLogs: false,
+  },
+
+  build: {
+    transpile: ['vuetify'],
+  },
+
+  vite: {
+    ssr: {
+      noExternal: ['vuetify'],
+    },
+  },
+
+  css: [],
+
+  vuetify: {
+    moduleOptions: {
+      // check https://nuxt.vuetifyjs.com/guide/server-side-rendering.html
+      ssrClientHints: {
+        reloadOnFirstRequest: false,
+        viewportSize: false,
+        prefersColorScheme: false,
+
+        prefersColorSchemeOptions: {
+          useBrowserThemeOnly: false,
+        },
+      },
+
+      // /* If customizing sass global variables ($utilities, $reset, $color-pack, $body-font-family, etc) */
+      // disableVuetifyStyles: true,
+      styles: {
+        configFile: 'assets/settings.scss',
+      },
+    },
+  },
 })
