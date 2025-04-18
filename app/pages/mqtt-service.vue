@@ -2,15 +2,15 @@
 import {useMqttSubscribe} from "~/composables/useMqttSubscribe";
 import useMqttPublish from "~/composables/useMqttPublish";
 
-const { $mqtt } = useNuxtApp()
-
-const message = useMqttSubscribe('test/topic')
+const message = useMqttSubscribe('test')
 
 const inputModel = ref("")
 
+watch(message, ()=>console.log(message))
+
 function sendMessage() {
   console.debug('sendMessage', inputModel);
-  useMqttPublish("test/topic", inputModel.value)
+  useMqttPublish("test", inputModel.value)
 }
 </script>
 

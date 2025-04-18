@@ -30,5 +30,15 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
   ],
-  css: ['@/assets/scss/default.scss']
+  css: ['@/assets/scss/default.scss'],
+
+  runtimeConfig: {
+    // Private variables, only available on server
+
+    // Public variables, available on client and server
+    public: {
+      mqttServerBaseUrl: '10.0.0.103',
+    }
+  }
+
 })

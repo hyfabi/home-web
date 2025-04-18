@@ -7,6 +7,7 @@ export const useMqttSubscribe = (topic: string) => {
         if (!$mqtt) return
 
         const handleMessage = (t: string, payload: Buffer) => {
+            console.debug(`Received ${payload.toJSON()}`)
             if (t === topic) {
                 message.value = payload.toString()
             }

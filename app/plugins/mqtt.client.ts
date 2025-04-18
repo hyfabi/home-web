@@ -1,9 +1,15 @@
 import mqtt from 'mqtt'
 
+const port = 1883;
+
+
+
 export default defineNuxtPlugin(() => {
     const mqttIsConnected = useState<boolean>('mqtt:isConnected', () => false);
 
-    const client = mqtt.connect('ws://10.0.0.103:1883', {
+    const config = useRuntimeConfig()
+
+    const client = mqtt.connect(`ws://${config.public.mqttServerBaseUrl}:${port}`, {
         clientId: process.env.CLIENT,
     }) // Use your broker URL
 
