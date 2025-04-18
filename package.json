@@ -11,7 +11,8 @@
     "prepare": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "Nitro:build": "nuxi build"
   },
   "dependencies": {
     "@nuxt/content": "^3.4.0",
@@ -24,10 +25,12 @@
     "eslint": "^9.23.0",
     "mqtt": "^5.11.0",
     "nuxt": "latest",
+    "sass": "^1.86.3",
+    "sass-loader": "^16.0.5",
     "scss": "^0.2.4",
     "vue": "latest",
     "vue-router": "^4.5.0",
-    "vuetify": "latest"
+    "vuetify": "^3.8.2"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",

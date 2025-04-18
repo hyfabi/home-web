@@ -8,7 +8,8 @@ definePageMeta({
 
 <template>
   <main>
-    <DnsServiceProtection/>
+    <!--<DnsServiceProtection/>-->
+    <v-btn color="white" text="aaa">aaaaaaaaaa</v-btn>
   </main>
 </template>
 

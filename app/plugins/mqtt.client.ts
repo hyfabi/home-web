@@ -2,8 +2,6 @@ import mqtt from 'mqtt'
 
 const port = 1883;
 
-
-
 export default defineNuxtPlugin(() => {
     const mqttIsConnected = useState<boolean>('mqtt:isConnected', () => false);
 

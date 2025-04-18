@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import {useMqttSubscribe} from "~/composables/useMqttSubscribe";
 import useMqttPublish from "~/composables/useMqttPublish";
+import {mqttTopics} from "~/utils/mqttTopics";
 
-const message = useMqttSubscribe('test')
+definePageMeta({
+  layout: 'default'
+})
+
+const message = useMqttSubscribe(mqttTopics.motd)
 
 const inputModel = ref("")
 
@@ -19,6 +24,11 @@ function sendMessage() {
     <button @click="sendMessage">sendMessage</button>
     <input v-model="inputModel" type="text" >
     <p>{{ message }}</p>
+
+    <v-btn icon="$vuetify">
+      Button
+    </v-btn>
+    <SendModal/>
   </article>
 </template>
 

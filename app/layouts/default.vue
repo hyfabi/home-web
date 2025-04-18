@@ -14,6 +14,5 @@
   width: 100vw;
   height: 100vh;
   position: absolute;
-  margin: -8px 0 0 -8px;
 }
 </style>
