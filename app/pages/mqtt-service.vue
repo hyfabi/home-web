@@ -9,29 +9,37 @@ definePageMeta({
 
 const message = useMqttSubscribe(mqttTopics.motd)
 
-const inputModel = ref("")
-
-watch(message, ()=>console.log(message))
-
-function sendMessage() {
-  console.debug('sendMessage', inputModel);
-  useMqttPublish("test", inputModel.value)
+function sendMessageOfTheDay(motd : string) {
+  console.debug('sendMessage', motd);
+  useMqttPublish(mqttTopics.motd, motd)
 }
+
+const showDialog = ref(false)
+const dialogText = 'Set Message of today!'
+
 </script>
 
 <template>
   <article>
-    <button @click="sendMessage">sendMessage</button>
-    <input v-model="inputModel" type="text" >
     <p>{{ message }}</p>
 
-    <v-btn icon="$vuetify">
-      Button
+    <v-btn class="upload-btn" icon elevation="15" @click="showDialog = true" v-tooltip="'Set Message of today!'">
+      <v-icon>mdi-publish</v-icon>
     </v-btn>
-    <SendModal/>
+
+
+    <SendModal
+        v-model="showDialog"
+        :text="dialogText"
+        :on-send="sendMessageOfTheDay"
+    />
   </article>
 </template>
 
 <style scoped>
-
+.upload-btn{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
 </style>

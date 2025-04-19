@@ -33,6 +33,10 @@ export default defineNuxtConfig({
     }
   },
 
+  plugins: [
+    { src: '~/plugins/mqtt.client.ts', mode: 'client' },
+  ],
+
   // when enabling ssr option you need to disable inlineStyles and maybe devLogs
   features: {
     inlineStyles: false,
@@ -49,7 +53,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: [],
+  css: ['vuetify/styles'],
 
   vuetify: {
     moduleOptions: {
