@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <v-container class="main">
-    <slot></slot>
-  </v-container>
+Penis
 </template>
 
 <style scoped>

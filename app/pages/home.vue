@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DnsServiceProtection from "~/pages/dns-service-protection.vue";
+import Clock from "~/pages/Clock.vue";
 
 definePageMeta({
   layout: 'default'
@@ -8,8 +8,7 @@ definePageMeta({
 
 <template>
   <main>
-    <!--<DnsServiceProtection/>-->
-    <v-btn color="white" text="aaa">aaaaaaaaaa</v-btn>
+    <Clock/>
   </main>
 </template>
 

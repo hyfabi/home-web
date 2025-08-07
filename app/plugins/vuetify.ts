@@ -1,5 +1,5 @@
 // plugins/vuetify.ts
-import { createVuetify } from 'vuetify'
+import {createVuetify, type ThemeDefinition} from 'vuetify'
 import 'vuetify/styles'
 
 const customDarkTheme = {
@@ -19,15 +19,10 @@ export default defineNuxtPlugin(nuxtApp => {
     const vuetify = createVuetify({
 
         theme: {
-            variations: {
-                colors: ['primary', 'secondary'],
-                lighten: 1,
-                darken: 2,
-            },
-            defaultTheme: 'customDark',
             themes: {
-                customDark: customDarkTheme,
-            },
+                dark: true,
+
+            }
         },
     })
 

@@ -5,7 +5,8 @@ export default defineNuxtConfig({
 
   devServer:{
     host: '0.0.0.0',
-    port: 80
+    port: 80,
+    
   },
 
   future: {
@@ -42,6 +43,10 @@ export default defineNuxtConfig({
     inlineStyles: false,
     devLogs: false,
   },
+  app:{
+    pageTransition: { name: 'page', mode: 'out-in' },
+
+  },
 
   build: {
     transpile: ['vuetify'],
@@ -53,7 +58,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['vuetify/styles'],
+  css: ['vuetify/styles', '@/assets/settings.scss'],
 
   vuetify: {
     moduleOptions: {
