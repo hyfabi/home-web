@@ -7,15 +7,23 @@ definePageMeta({
   layout: 'default'
 })
 
-const message = useMqttSubscribe(mqttTopics.motd)
+let message = ref('');
+let showDialog = ref('');
+let dialogText = ref('');
+
+onMounted(() => {
+  message.value = useMqttSubscribe(mqttTopics.motd)
+
+  showDialog.value = ref(false)
+  dialogText.value = 'Set Message of today!'
+})
 
 function sendMessageOfTheDay(motd : string) {
   console.debug('sendMessage', motd);
   useMqttPublish(mqttTopics.motd, motd)
 }
 
-const showDialog = ref(false)
-const dialogText = 'Set Message of today!'
+
 
 </script>
 

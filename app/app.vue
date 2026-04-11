@@ -8,5 +8,9 @@
 
 <script setup lang="ts">
 
+  startUp()
+  function startUp() {
+
+  }
 
 </script>

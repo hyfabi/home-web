@@ -8,7 +8,7 @@ definePageMeta({
 
 <template>
   <main>
-    <Clock/>
+
   </main>
 </template>
 

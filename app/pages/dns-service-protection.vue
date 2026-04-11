@@ -5,12 +5,10 @@
     <h1>Dns Service Protection</h1>
     <table>
       <thead>
-      <div>Name</div>
+      <v-row><v-col>Name</v-col></v-row>
+
       </thead>
       <tbody>
-        <div v-for="">
-
-        </div>
       </tbody>
     </table>
   </div>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 
-
-
 </script>
 
 <template>
-  <v-container class="main">
-    <slot></slot>
+  <v-container>
+    <v-row justify="center">
+      <v-col>Hello {{}}</v-col>
+    </v-row>
   </v-container>
 </template>
 

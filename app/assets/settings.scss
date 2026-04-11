@@ -3,4 +3,24 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  animation: slideIn 1s ease-in-out;
+}
+
+body{
+  background-color: black!important;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.v-theme--dark{
+  --v-theme-background: 0,0,0 !important;
 }
