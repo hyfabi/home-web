@@ -1,21 +1,3 @@
-
-
-<template>
-  <div>
-    <h1>Dns Service Protection</h1>
-    <table>
-      <thead>
-      <div>Name</div>
-      </thead>
-      <tbody>
-        <div v-for="">
-
-        </div>
-      </tbody>
-    </table>
-  </div>
-</template>
-
 <script setup lang="ts">
 definePageMeta({
   layout: 'default'
@@ -30,9 +12,14 @@ useHead({
   ]
 })
 
-
+console.log(fetchQueryLog())
 
 </script>
+
+<template>
+  <h1>Dns Service Protection</h1>
+
+</template>
 
 <style scoped>
   *{
