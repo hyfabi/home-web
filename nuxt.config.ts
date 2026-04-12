@@ -58,6 +58,15 @@ export default defineNuxtConfig({
     ssr: {
       noExternal: ['vuetify'],
     },
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'mqtt',
+        '@tresjs/cientos',
+        'three',
+      ]
+    }
   },
 
   css: ['vuetify/styles', '@/assets/settings.scss'],

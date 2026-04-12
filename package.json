@@ -32,7 +32,6 @@
     "eslint": "^9.39.2",
     "mqtt": "^5.14.1",
     "nuxt": "latest",
-    "prisma": "^7.2.0",
     "typescript": "^latest",
     "vue": "latest",
     "vue-router": "latest",
