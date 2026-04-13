@@ -32,6 +32,7 @@
     "eslint": "^9.39.2",
     "mqtt": "^5.14.1",
     "nuxt": "latest",
+    "three": "^0.183.2",
     "typescript": "^latest",
     "vue": "latest",
     "vue-router": "latest",
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@mdi/font": "^7.4.47",
     "@nuxt/fonts": "^0.12.1",
+    "@types/three": "^0.183.1",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.8.9",
     "sass-embedded": "^1.97.1",
