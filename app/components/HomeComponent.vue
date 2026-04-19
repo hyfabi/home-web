@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import * as THREE from "three";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {type GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const sceneContainer = ref<HTMLElement | null>(null)
@@ -12,10 +12,15 @@ onMounted(() => {
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-  camera.position.z = 5
 
-  const renderer = new THREE.WebGLRenderer()
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    depth: true,
+
+  })
   renderer.setSize(sceneContainer.value?.offsetWidth ?? window.innerWidth, sceneContainer.value?.offsetHeight ??window.innerHeight)
+  renderer.shadowMap.enabled = false;
+  renderer.toneMappingExposure = 0.5
 
   sceneContainer.value?.appendChild(renderer.domElement)
 
@@ -26,7 +31,7 @@ onMounted(() => {
 
   loader.load(
       '/models/Floor.glb',
-      (gltf) => {
+      (gltf : GLTF) => {
         console.log('LOADED', gltf)
 
         model = gltf.scene
@@ -38,7 +43,7 @@ onMounted(() => {
 
         model.position.sub(center)
 
-// move camera based on model size
+        // move camera based on model size
         camera.position.set(0, size / 2, size * 1.5)
         camera.lookAt(0, 0, 0)
       },
@@ -56,11 +61,14 @@ onMounted(() => {
   controls.enableDamping = true
   controls.dampingFactor = 0.05
 
-  const light = new THREE.DirectionalLight(0xffffff, 2)
-  light.position.set(5, 5, 5)
-
+  const light = new THREE.DirectionalLight(0xffffff, 20)
+  light.position.set(2, 2, 200)
   scene.add(light)
-  scene.add(new THREE.AmbientLight(0xffffff, 1))
+
+
+  scene.add(new THREE.AmbientLight(0xffff44, 500))
+
+  scene.fog = null;
 
   const animate = (timestamp : number) => {
     requestAnimationFrame(animate)
@@ -77,7 +85,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="sceneContainer" class="ma-0 flex-grow-1">
+  <div ref="sceneContainer" style="height: 100vh" class="ma-0 flex-grow-1">
 
   </div>
 </template>
