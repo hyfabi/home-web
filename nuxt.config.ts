@@ -15,6 +15,18 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
 
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      name: 'My App',
+      short_name: 'MyApp',
+      start_url: '/',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#ffffff'
+    }
+  },
+
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',
@@ -25,6 +37,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     'vuetify-nuxt-module',
+    '@vite-pwa/nuxt'
   ],
 
   ssr: false,

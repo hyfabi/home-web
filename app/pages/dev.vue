@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  definePageMeta({
+import {subscribeToPush} from "~/utils/notifications";
+
+definePageMeta({
     layout: 'default'
   })
 
@@ -12,6 +14,9 @@
 <template>
   <main class="main">
     <h1>Dev</h1>
+    <button @click="subscribeToPush()">
+      Enable Notifications
+    </button>
   </main>
 </template>
 
