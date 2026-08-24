@@ -6,12 +6,13 @@ definePageMeta({
   layout: 'default'
 })
 
-
 </script>
 
 <template>
   <main>
-    <HomeComponent/>
+    <v-row>
+      <HomeComponent/>
+    </v-row>
   </main>
 </template>
 
@@ -20,5 +21,6 @@ definePageMeta({
     display: flex;
     flex-grow: 1;
     margin: 0 8px;
+    flex-direction: column;
   }
 </style>

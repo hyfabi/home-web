@@ -9,6 +9,9 @@ definePageMeta({
 
   useState("test", () => true).value = false
 
+const { data } = await useFetch('/api/hello')
+
+
 </script>
 
 <template>
@@ -17,6 +20,9 @@ definePageMeta({
     <button @click="subscribeToPush()">
       Enable Notifications
     </button>
+    {{data}}
+    <iframe src="/api/hello"></iframe>
+
   </main>
 </template>
 

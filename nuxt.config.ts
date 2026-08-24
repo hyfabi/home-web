@@ -45,7 +45,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Private variables, only available on server
     public: {
-      mqttServerBaseUrl: '10.0.0.103',
+      mqttServerBaseUrl: 'mqtt.hyfabi.net',
     }
   },
 
