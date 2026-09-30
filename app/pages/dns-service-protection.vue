@@ -1,7 +1,74 @@
+<script setup lang="ts">
 
+import {onMounted, onUnmounted, ref, watch} from 'vue'
+
+const MAX_ENTRIES = 2;
+
+const refreshRate = ref(5)
+const logs = ref<any[]>([])
+const pending = ref(false)
+const error = ref(null)
+
+const { data, refresh } = await useFetch('/api/adguard-logs', {
+  server: false,
+  immediate: false
+})
+
+// Track unique log entries temporarily in memory
+const visibleLogs = ref([])
+
+function addNewLogs(logsToCompare: any[]) {
+  if(visibleLogs.value.length ==  0) {
+    visibleLogs.value = logsToCompare
+    return
+  }
+
+  const existingTimestamps : string[] = visibleLogs.value.map(log => log.time)
+  const newLogs = logsToCompare.filter(newLog => existingTimestamps.find(value => value === newLog.time) == null)
+  console.debug(`Added ${newLogs.length} entries`)
+  if(newLogs.length !== 0)
+    visibleLogs.value.unshift(...newLogs)
+}
+
+async function manualRefresh() {
+  pending.value = true
+
+  try {
+    await refresh()
+    if (data.value?.data) {
+      addNewLogs(data.value.data)
+    }
+  } catch (e) {
+    error.value = e as any
+  } finally {
+    pending.value = false
+  }
+}
+
+let interval: ReturnType<typeof setInterval> | undefined
+
+function startAutoRefresh() {
+  if (interval) clearInterval(interval)
+
+  interval = setInterval(() => {
+    manualRefresh()
+  }, refreshRate.value * 1000)
+}
+
+watch(refreshRate, startAutoRefresh)
+
+onMounted(() => {
+  manualRefresh()
+  startAutoRefresh()
+})
+
+onUnmounted(() => {
+  if (interval) clearInterval(interval)
+})
+</script>
 
 <template>
-  <div>
+  <v-container>
     <h1>Dns Service Protection</h1>
     <div v-if="data === undefined">Loading...</div>
     <div v-else-if="error">Something went wrong</div>
@@ -13,7 +80,7 @@
         density="compact"
         fixed-header>
       <thead>
-      <tr>
+      <tr class="rounded">
         <th><u>Client</u></th>
         <th><u>Dest.</u></th>
       </tr>
@@ -22,11 +89,11 @@
         name="row"
         tag="tbody"
     >
-        <tr v-for="record in data.data" :key="record.time" :class="{
+        <tr v-for="record in visibleLogs" :key="record.time" :class="{
           'cached' : record.cached,
           'rejected' : record.reason == 'FilteredBlackList',
         'reason' : record.reason == 'Rewrite'}">
-          <td >{{record.client}}</td>
+          <td>{{record.client}}</td>
           <td>{{record.question.name}}</td>
         </tr>
       </TransitionGroup>
@@ -42,79 +109,19 @@
           step="1"
           thumb-label
           hide-details
-          width="40vw"
+          width="30vw"
       />
 
-      <v-btn
+      <v-icon-btn
           color="primary"
           :loading="pending"
           @click="manualRefresh"
+          icon="mdi-refresh"
       >
-        <v-icon start>
-          mdi-refresh
-        </v-icon>
-
-        Refresh
-      </v-btn>
+      </v-icon-btn>
     </div>
-  </div>
+  </v-container>
 </template>
-<script setup lang="ts">
-
-</script>
-
-<script setup lang="ts">
-
-const { data, pending, error, refresh } = await useFetch('/api/adguard-logs')
-
-definePageMeta({
-  layout: 'default'
-})
-
-useHead({
-  link: [
-    {
-      rel: 'stylesheet',
-      href: 'https://api.fontshare.com/v2/css?f[]=outfit@400&display=swap'
-    }
-  ]
-})
-
-let interval: ReturnType<typeof setInterval> | undefined
-const refreshRate = ref(5)
-
-
-function startAutoRefresh() {
-  if (interval) {
-    clearInterval(interval)
-  }
-
-  interval = setInterval(() => {
-    refresh()
-  }, refreshRate.value * 1000)
-}
-
-function manualRefresh() {
-  refresh({
-    cause: "refresh:manual"
-  })
-  startAutoRefresh()
-}
-
-watch(refreshRate, () => {
-  startAutoRefresh()
-})
-
-onMounted(() => {
-  startAutoRefresh()
-})
-
-onUnmounted(() => {
-  if (interval) {
-    clearInterval(interval)
-  }
-})
-</script>
 
 <style scoped>
   *{
