@@ -3,7 +3,7 @@ export default defineEventHandler(async () => {
     return await $fetch(
         `${process.env.ADGUARD_URL}/control/querylog`,
         {
-            query: { limit: 20 },
+            query: { limit: 50 },
             headers: {
                 Authorization: `Basic ${Buffer.from(
                     `${process.env.ADGUARD_USER}:${process.env.ADGUARD_PASSWORD}`

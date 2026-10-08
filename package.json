@@ -15,7 +15,8 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:unit": "vitest --project unit",
-    "test:nuxt": "vitest --project nuxt"
+    "test:nuxt": "vitest --project nuxt",
+    "deploy:local": "scp -r .output root@10.0.0.102:/opt/www/ ; reboot"
   },
   "dependencies": {
     "@nuxt/content": "^3.16.1",

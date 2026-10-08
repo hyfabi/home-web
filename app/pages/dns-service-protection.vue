@@ -9,8 +9,8 @@ const logs = ref<any[]>([])
 const pending = ref(false)
 const error = ref(null)
 
-const { data, refresh } = await useFetch('/api/adguard-logs', {
-  server: false,
+const {data, refresh} = await useFetch('/api/adguard-logs', {
+  server: true,
   immediate: false
 })
 
@@ -18,15 +18,15 @@ const { data, refresh } = await useFetch('/api/adguard-logs', {
 const visibleLogs = ref([])
 
 function addNewLogs(logsToCompare: any[]) {
-  if(visibleLogs.value.length ==  0) {
+  if (visibleLogs.value.length == 0) {
     visibleLogs.value = logsToCompare
     return
   }
 
-  const existingTimestamps : string[] = visibleLogs.value.map(log => log.time)
+  const existingTimestamps: string[] = visibleLogs.value.map(log => log.time)
   const newLogs = logsToCompare.filter(newLog => existingTimestamps.find(value => value === newLog.time) == null)
   console.debug(`Added ${newLogs.length} entries`)
-  if(newLogs.length !== 0)
+  if (newLogs.length !== 0)
     visibleLogs.value.unshift(...newLogs)
 }
 
@@ -65,10 +65,29 @@ onMounted(() => {
 onUnmounted(() => {
   if (interval) clearInterval(interval)
 })
+const groups = computed(() => {
+  const result: any[] = []
+  let currentGroup: null | any[] = null;
+  visibleLogs.value.forEach((record, index) => {
+    debugger;
+    // Start a new group when the client changes.
+    if(!currentGroup){
+      currentGroup = [record];
+    }else{
+      console.debug(currentGroup[0].client, record.client)
+      if(currentGroup[0].client === record.client && currentGroup[0].question.name === record.question.name)
+        currentGroup.push(record)
+      else{
+        result.push(currentGroup)
+        currentGroup = [record];
+      }
+    }
+  })
+  return result
+});
 </script>
-
 <template>
-  <v-container>
+  <v-container fluid>
     <h1>Dns Service Protection</h1>
     <div v-if="data === undefined">Loading...</div>
     <div v-else-if="error">Something went wrong</div>
@@ -78,7 +97,7 @@ onUnmounted(() => {
         gridlines="vertical"
         hover
         density="compact"
-        fixed-header>
+        fixedHeader>
       <thead>
       <tr class="rounded">
         <th><u>Client</u></th>
@@ -86,16 +105,19 @@ onUnmounted(() => {
       </tr>
       </thead>
       <TransitionGroup
-        name="row"
-        tag="tbody"
-    >
-        <tr v-for="record in visibleLogs" :key="record.time" :class="{
-          'cached' : record.cached,
-          'rejected' : record.reason == 'FilteredBlackList',
-        'reason' : record.reason == 'Rewrite'}">
-          <td>{{record.client}}</td>
-          <td>{{record.question.name}}</td>
-        </tr>
+          name="row"
+          tag="tbody"
+      >
+        <CollapsibleTableRow v-for="(group, index) in groups"
+                             :key="index"
+                             :items="group" />
+        <!--        <tr v-for="record in visibleLogs" :key="record.time" :class="{-->
+        <!--          'cached' : record.cached,-->
+        <!--          'rejected' : record.reason == 'FilteredBlackList',-->
+        <!--          'reason' : record.reason == 'Rewrite'}">-->
+        <!--          <td>{{record.client}}</td>-->
+        <!--          <td>{{record.question.name}}</td>-->
+        <!--        </tr>-->
       </TransitionGroup>
     </v-table>
     <div class="d-flex align-center ga-4 mb-4 refresh-controls">
@@ -124,54 +146,43 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-  *{
-    font-family: 'Outfit', sans-serif;
-  }
+* {
+  font-family: 'Outfit', sans-serif;
+}
 
-  .cached{
-    color: greenyellow;
-    font-weight: lighter;
-  }
-  .reason{
-    color: lightblue;
-  }
-  .rejected{
-    color: darkred;
-  }
+.refresh-controls {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
 
-  .refresh-controls {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
 
-    padding: 12px 16px;
-    border-radius: 12px;
+  background: transparent;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
 
-    background: transparent;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  }
+.row-enter-active,
+.row-leave-active {
+  transition: all 0.4s ease;
+}
 
-  .row-enter-active,
-  .row-leave-active {
-    transition: all 0.4s ease;
-  }
+.row-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
 
-  .row-enter-from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+.row-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
 
-  .row-leave-to {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  .row-move {
-    transition: transform 0.4s ease;
-  }
+.row-move {
+  transition: transform 0.4s ease;
+}
 </style>

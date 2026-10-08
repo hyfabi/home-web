@@ -14,7 +14,11 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
   },
-
+    runtimeConfig: {
+    adguardUrl: '',
+    adguardUser: '',
+    adguardPasssword: '',
+    },
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
